@@ -1,0 +1,166 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adflab-myadf"
+		},
+		"ADLSGen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADLSGen2'"
+		},
+		"AmazonS3_Source_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'AmazonS3_Source'"
+		},
+		"AzSrorage_Staging_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzSrorage_Staging'"
+		},
+		"Azure DW DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Azure DW DB'"
+		},
+		"Azure ODS DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Azure ODS DB'"
+		},
+		"HDIStorageLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'HDIStorageLinkedService'"
+		},
+		"HDInsightLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'HDInsightLinkedService'"
+		},
+		"SSISDB Azure Endpoint_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SSISDB Azure Endpoint'"
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataflow.dfs.core.windows.net/"
+		},
+		"AmazonS3_Source_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAVIMR7B66JW7MWC5M"
+		},
+		"HDInsightLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"HTTP_Weather_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://weather-b362.restdb.io/rest/random-weather-dec-2016"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"type": "string",
+			"defaultValue": "adflabsqlrdr4l.database.windows.net"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"type": "string",
+			"defaultValue": "labadmin"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"type": "secureString"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adflab-myadf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ADLSGen2_accountKey": {
+						"value": "[parameters('ADLSGen2_accountKey')]"
+					},
+					"AmazonS3_Source_secretAccessKey": {
+						"value": "[parameters('AmazonS3_Source_secretAccessKey')]"
+					},
+					"AzSrorage_Staging_connectionString": {
+						"value": "[parameters('AzSrorage_Staging_connectionString')]"
+					},
+					"Azure DW DB_connectionString": {
+						"value": "[parameters('Azure DW DB_connectionString')]"
+					},
+					"Azure ODS DB_connectionString": {
+						"value": "[parameters('Azure ODS DB_connectionString')]"
+					},
+					"HDIStorageLinkedService_connectionString": {
+						"value": "[parameters('HDIStorageLinkedService_connectionString')]"
+					},
+					"SSISDB Azure Endpoint_connectionString": {
+						"value": "[parameters('SSISDB Azure Endpoint_connectionString')]"
+					},
+					"ADLSGen2_properties_typeProperties_url": {
+						"value": "[parameters('ADLSGen2_properties_typeProperties_url')]"
+					},
+					"AmazonS3_Source_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('AmazonS3_Source_properties_typeProperties_accessKeyId')]"
+					},
+					"HTTP_Weather_properties_typeProperties_url": {
+						"value": "[parameters('HTTP_Weather_properties_typeProperties_url')]"
+					},
+					"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+						"value": "[parameters('ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint')]"
+					},
+					"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+						"value": "[parameters('ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName')]"
+					},
+					"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+						"value": "[parameters('ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adflab-myadf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"HDInsightLinkedService_password": {
+						"value": "[parameters('HDInsightLinkedService_password')]"
+					},
+					"HDInsightLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('HDInsightLinkedService_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adflab-myadf_ArmTemplate_0')]"
+			]
+		}
+	]
+}

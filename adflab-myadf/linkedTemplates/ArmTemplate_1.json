@@ -1,0 +1,2433 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adflab-myadf"
+		},
+		"HDInsightLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'HDInsightLinkedService'"
+		},
+		"HDInsightLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSGen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "output",
+						"fileSystem": "sample-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ODS_Airline')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Azure ODS DB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Airline_Code",
+						"type": "varchar"
+					},
+					{
+						"name": "LastUpdDTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Airline"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ODS_Airport')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Azure ODS DB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Code",
+						"type": "varchar"
+					},
+					{
+						"name": "City_Airport",
+						"type": "varchar"
+					},
+					{
+						"name": "LastUpdDTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Airport"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ODS_Flight')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Azure ODS DB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "YEAR",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "MONTH",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "FL_DATE",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "UNIQUE_CARRIER",
+						"type": "varchar"
+					},
+					{
+						"name": "AIRLINE_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CARRIER",
+						"type": "varchar"
+					},
+					{
+						"name": "TAIL_NUM",
+						"type": "varchar"
+					},
+					{
+						"name": "FL_NUM",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORIGIN_AIRPORT_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORIGIN_AIRPORT_SEQ_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ORIGIN_CITY_MARKET_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEST_AIRPORT_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEST_AIRPORT_SEQ_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEST_CITY_MARKET_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DEP_TIME",
+						"type": "varchar"
+					},
+					{
+						"name": "DEP_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "DEP_DELAY_NEW",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "TAXI_OUT",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "WHEELS_OFF",
+						"type": "varchar"
+					},
+					{
+						"name": "WHEELS_ON",
+						"type": "varchar"
+					},
+					{
+						"name": "TAXI_IN",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "ARR_TIME",
+						"type": "varchar"
+					},
+					{
+						"name": "ARR_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "ARR_DELAY_NEW",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "CANCELLED",
+						"type": "bit"
+					},
+					{
+						"name": "CANCELLATION_CODE",
+						"type": "varchar"
+					},
+					{
+						"name": "ACTUAL_ELAPSED_TIME",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "AIR_TIME",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "FLIGHTS",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DISTANCE",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CARRIER_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "WEATHER_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "NAS_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "SECURITY_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "LATE_AIRCRAFT_DELAY",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "DEST_CODE",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGIN_CODE",
+						"type": "varchar"
+					},
+					{
+						"name": "LastUpdDTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Flight"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S3_Master_FAA_File')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AmazonS3_Source",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AmazonS3Location",
+						"bucketName": "sennchieebucket",
+						"fileName": "MASTER.txt"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "N-Number",
+						"type": "String"
+					},
+					{
+						"name": "Serial Number",
+						"type": "String"
+					},
+					{
+						"name": "MFR MDL Code",
+						"type": "String"
+					},
+					{
+						"name": "Eng MFR Code",
+						"type": "String"
+					},
+					{
+						"name": "Year MFR",
+						"type": "String"
+					},
+					{
+						"name": "Type Registrant",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Street2",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "ZIP",
+						"type": "String"
+					},
+					{
+						"name": "Region",
+						"type": "String"
+					},
+					{
+						"name": "County ",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Last Activity Date",
+						"type": "String"
+					},
+					{
+						"name": "Cert Issue Date",
+						"type": "String"
+					},
+					{
+						"name": "Certification Requested ",
+						"type": "String"
+					},
+					{
+						"name": "Type Aircraft",
+						"type": "String"
+					},
+					{
+						"name": "Type Engine",
+						"type": "String"
+					},
+					{
+						"name": "Status Code",
+						"type": "String"
+					},
+					{
+						"name": "Mode S Code",
+						"type": "String"
+					},
+					{
+						"name": "Fractional  Ownership",
+						"type": "String"
+					},
+					{
+						"name": "Airworthiness Date",
+						"type": "String"
+					},
+					{
+						"name": "Other Name 1",
+						"type": "String"
+					},
+					{
+						"name": "Other Name 2",
+						"type": "String"
+					},
+					{
+						"name": "Other Name 3",
+						"type": "String"
+					},
+					{
+						"name": "Other Name 4",
+						"type": "String"
+					},
+					{
+						"name": "Other Name 5",
+						"type": "String"
+					},
+					{
+						"name": "Expiration Date",
+						"type": "String"
+					},
+					{
+						"name": "Unique ID",
+						"type": "String"
+					},
+					{
+						"name": "Kit MFR Code",
+						"type": "String"
+					},
+					{
+						"name": "Kit Model",
+						"type": "String"
+					},
+					{
+						"name": "Mose S Code Hex",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_0gt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HTTP_Weather",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"_id": {
+							"type": "string"
+						},
+						"date": {
+							"type": "string"
+						},
+						"dateint": {
+							"type": "integer"
+						},
+						"airport": {
+							"type": "string"
+						},
+						"temp": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HDInsightLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HDInsight",
+				"typeProperties": {
+					"clusterUri": "https://HDI-ADFLab.azurehdinsight.net",
+					"userName": "[parameters('HDInsightLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('HDInsightLinkedService_password')]"
+					},
+					"isEspEnabled": false,
+					"linkedServiceName": {
+						"referenceName": "HDIStorageLinkedService",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HDInsight')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Hive1",
+						"type": "HDInsightHive",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"scriptPath": "adfgetstarted/hivescripts/partitionweblogs.hql",
+							"defines": {
+								"Output": "wasbs://adfgetstarted@hdiadflabhdistorage.blob.core.windows.net/outputfolder/"
+							},
+							"scriptLinkedService": {
+								"referenceName": "HDIStorageLinkedService",
+								"type": "LinkedServiceReference"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "HDInsightLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-03T08:36:20Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HDInsightLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Data Warehouse')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DW Truncate Staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_TruncateStaging]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Azure DW DB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "ODS Airline to DW",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "DW Truncate Staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzSrorage_Staging",
+									"type": "LinkedServiceReference"
+								},
+								"path": "output"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Code",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "Code",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Airline_Code",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Airline_Code",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ODS_Airline",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DW_Staging_Airline",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ODS Airport to DW",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "DW Truncate Staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzSrorage_Staging",
+									"type": "LinkedServiceReference"
+								},
+								"path": "output"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Code",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Code",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "City_Airport",
+											"type": "String"
+										},
+										"sink": {
+											"name": "City_Airport",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ODS_Airport",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DW_Staging_Airport",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ODS Flight to DW",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "DW Truncate Staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzSrorage_Staging",
+									"type": "LinkedServiceReference"
+								},
+								"path": "output"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "YEAR",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "YEAR",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "MONTH",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "MONTH",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "FL_DATE",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "FL_DATE",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "UNIQUE_CARRIER",
+											"type": "String"
+										},
+										"sink": {
+											"name": "UNIQUE_CARRIER",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AIRLINE_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "AIRLINE_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "CARRIER",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CARRIER",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TAIL_NUM",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TAIL_NUM",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FL_NUM",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "FL_NUM",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGIN_AIRPORT_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ORIGIN_AIRPORT_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGIN_AIRPORT_SEQ_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ORIGIN_AIRPORT_SEQ_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGIN_CITY_MARKET_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ORIGIN_CITY_MARKET_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "DEST_AIRPORT_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "DEST_AIRPORT_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "DEST_AIRPORT_SEQ_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "DEST_AIRPORT_SEQ_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "DEST_CITY_MARKET_ID",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "DEST_CITY_MARKET_ID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "DEP_TIME",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DEP_TIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DEP_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "DEP_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "DEP_DELAY_NEW",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "DEP_DELAY_NEW",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "TAXI_OUT",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "TAXI_OUT",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "WHEELS_OFF",
+											"type": "String"
+										},
+										"sink": {
+											"name": "WHEELS_OFF",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "WHEELS_ON",
+											"type": "String"
+										},
+										"sink": {
+											"name": "WHEELS_ON",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TAXI_IN",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "TAXI_IN",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "ARR_TIME",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ARR_TIME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ARR_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "ARR_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "ARR_DELAY_NEW",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "ARR_DELAY_NEW",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "CANCELLED",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "CANCELLED",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "CANCELLATION_CODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CANCELLATION_CODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTUAL_ELAPSED_TIME",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "ACTUAL_ELAPSED_TIME",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "AIR_TIME",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "AIR_TIME",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "FLIGHTS",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "FLIGHTS",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "DISTANCE",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "DISTANCE",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "CARRIER_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "CARRIER_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "WEATHER_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "WEATHER_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "NAS_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "NAS_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "SECURITY_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "SECURITY_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "LATE_AIRCRAFT_DELAY",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "LATE_AIRCRAFT_DELAY",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"name": "DEST_CODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DEST_CODE",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGIN_CODE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ORIGIN_CODE",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ODS_Flight",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DW_Staging_Flight",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Blob FAA to DW",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "DW Truncate Staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowCopyCommand": true,
+								"copyCommandSettings": {}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzSrorage_Staging",
+									"type": "LinkedServiceReference"
+								},
+								"path": "output"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "N_Number",
+											"type": "String"
+										},
+										"sink": {
+											"name": "N-Number",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Serial_Number",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Serial Number",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year_MFR",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Year MFR",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MFR_Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MFR-NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Model_Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "MODEL-NAME",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Number_Engines",
+											"type": "String"
+										},
+										"sink": {
+											"name": "NUMBER-ENGINES",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Number_Seats",
+											"type": "String"
+										},
+										"sink": {
+											"name": "NUMBER-SEATS",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "FAA_Merge",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DW_Staging_Aircraft",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Blob Weather to DW",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "DW Truncate Staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowCopyCommand": true,
+								"copyCommandSettings": {}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzSrorage_Staging",
+									"type": "LinkedServiceReference"
+								},
+								"path": "output"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "_id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "String"
+										},
+										"sink": {
+											"name": "weatherDate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dateint",
+											"type": "String"
+										},
+										"sink": {
+											"name": "weatherDateInt",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "airport",
+											"type": "String"
+										},
+										"sink": {
+											"name": "airportCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "temp",
+											"type": "String"
+										},
+										"sink": {
+											"name": "temperatureF",
+											"type": "Int32"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Blob_Weather",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DW_Staging_Weather",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "DW Load Dimensions",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ODS Airline to DW",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "ODS Airport to DW",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "ODS Flight to DW",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Blob FAA to DW",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Blob Weather to DW",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_LoadDimensions]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Azure DW DB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "DW Load Fact",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "DW Load Dimensions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[usp_LoadFact]"
+						},
+						"linkedServiceName": {
+							"referenceName": "Azure DW DB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-03T09:42:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ODS_Airline')]",
+				"[concat(variables('factoryId'), '/datasets/ODS_Airport')]",
+				"[concat(variables('factoryId'), '/datasets/ODS_Flight')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Merge FAA Files')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Run FAA Hive Merge",
+						"type": "HDInsightHive",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"scriptPath": "adfgetstarted/hivescripts/FAAMerge.hql",
+							"scriptLinkedService": {
+								"referenceName": "HDIStorageLinkedService",
+								"type": "LinkedServiceReference"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "HDInsightLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-03T08:48:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HDInsightLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Weather to Blob Copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Exec Weather to Blob Copy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Destination",
+								"value": "input//201612-WeatherData.txt"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET",
+									"additionalHeaders": "x-apikey: 5a31643dcb25c1076c7cd9ab\nContent-Type: application/json"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['_id']"
+										},
+										"sink": {
+											"name": "_id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['date']"
+										},
+										"sink": {
+											"name": "date"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dateint']"
+										},
+										"sink": {
+											"name": "dateint"
+										}
+									},
+									{
+										"source": {
+											"path": "$['airport']"
+										},
+										"sink": {
+											"name": "airport"
+										}
+									},
+									{
+										"source": {
+											"path": "$['temp']"
+										},
+										"sink": {
+											"name": "temp"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceDataset_0gt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DestinationDataset_0gt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-02T13:41:29Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_0gt')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransformMovies')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDB",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesDB"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesSink",
+								"type": "DatasetReference"
+							},
+							"name": "Sink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FilterYears"
+						},
+						{
+							"name": "AggregateComedyRatings"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movie as string,",
+						"          title as string,",
+						"          genres as string,",
+						"          year as string,",
+						"          Rating as string,",
+						"          {Rotton Tomato} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesDB",
+						"MoviesDB filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, 'Comedy')) ~> FilterYears",
+						"FilterYears aggregate(groupBy(year),",
+						"     AverageComedyRating = avg(toInteger(Rating))) ~> AggregateComedyRatings",
+						"AggregateComedyRatings sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['tutorial.txt'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> Sink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MoviesSink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Master - Behin DW Load')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "S3 to Azure blob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "N-Number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "N-Number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Serial Number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Serial Number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MFR MDL Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MFR MDL Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Eng MFR Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Eng MFR Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year MFR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Year MFR",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type Registrant",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Type Registrant",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Street 1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Street 1",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Street2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Street2",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "City",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "City",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "State",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "State",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ZIP",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ZIP",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Region",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Region",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "County ",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "County ",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Country",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Last Activity Date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Last Activity Date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Cert Issue Date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Cert Issue Date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Certification Requested ",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Certification Requested ",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type Aircraft",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Type Aircraft",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type Engine",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Type Engine",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Status Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Status Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mode S Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Mode S Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Fractional  Ownership",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Fractional  Ownership",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Airworthiness Date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Airworthiness Date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Other Name 1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Other Name 1",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Other Name 2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Other Name 2",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Other Name 3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Other Name 3",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Other Name 4",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Other Name 4",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Other Name 5",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Other Name 5",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Expiration Date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Expiration Date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Unique ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Unique ID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Kit MFR Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Kit MFR Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Kit Model",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Kit Model",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mose S Code Hex",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Mose S Code Hex",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Azure_Blob_Master_FAA_File",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Azure_Blob_Master_FAA_File",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Send Success Email",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "S3 to Azure blob",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-28.eastus.logic.azure.com:443/workflows/a3b661393606458e9b56ef3c91c20615/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Jd8GoZJcjZmNk3sIwzBtA38XbwnFerETG3LX4jYaTu0",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"dataFactoryName": "@{pipeline().DataFactory}",
+								"successtype": "Succeeded",
+								"message": "@{activity('S3 to Azure Blob').output.dataWritten}",
+								"pipelineName": "@{pipeline().Pipeline}",
+								"recipient": "@{pipeline().parameters.recipient}"
+							}
+						}
+					},
+					{
+						"name": "Send Failure Email",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "S3 to Azure blob",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-28.eastus.logic.azure.com:443/workflows/a3b661393606458e9b56ef3c91c20615/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Jd8GoZJcjZmNk3sIwzBtA38XbwnFerETG3LX4jYaTu0",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "Application/json"
+							},
+							"body": {
+								"value": "Body{\"dataFactoryName\":\"@{pipeline().DataFactory}\",\"successtype\":\"Failed\",\"message\":\"@{activity('S3 to Azure Blob').error.message}\",\"pipelineName\":\"@{pipeline().Pipeline}\",\"recipient\":\"@{pipeline().parameters.recipient}\"}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Weather to Blob Copy",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Send Success Email",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Weather to Blob Copy",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Merge FAA Files",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Weather to Blob Copy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Merge FAA Files",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"recipient": {
+						"type": "string",
+						"defaultValue": "sennchieelim@microsoft.com"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-03T11:31:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Weather to Blob Copy')]",
+				"[concat(variables('factoryId'), '/pipelines/Merge FAA Files')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransformMovies')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "TransformMovies",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "TransformMovies",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"MoviesDB": {},
+									"Sink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-08-05T02:05:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/TransformMovies')]"
+			]
+		}
+	]
+}

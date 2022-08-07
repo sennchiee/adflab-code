@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adflab-myadf"
+		},
+		"ADLSGen2_accountKey": {
+			"value": ""
+		},
+		"AmazonS3_Source_secretAccessKey": {
+			"value": ""
+		},
+		"AzSrorage_Staging_connectionString": {
+			"value": ""
+		},
+		"Azure DW DB_connectionString": {
+			"value": ""
+		},
+		"Azure ODS DB_connectionString": {
+			"value": ""
+		},
+		"HDIStorageLinkedService_connectionString": {
+			"value": ""
+		},
+		"HDInsightLinkedService_password": {
+			"value": ""
+		},
+		"SSISDB Azure Endpoint_connectionString": {
+			"value": ""
+		},
+		"ADLSGen2_properties_typeProperties_url": {
+			"value": "https://dataflow.dfs.core.windows.net/"
+		},
+		"AmazonS3_Source_properties_typeProperties_accessKeyId": {
+			"value": "AKIAVIMR7B66JW7MWC5M"
+		},
+		"HDInsightLinkedService_properties_typeProperties_userName": {
+			"value": "admin"
+		},
+		"HTTP_Weather_properties_typeProperties_url": {
+			"value": "https://weather-b362.restdb.io/rest/random-weather-dec-2016"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"value": "adflabsqlrdr4l.database.windows.net"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"value": "labadmin"
+		},
+		"ADFLab-SSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
