@@ -1,0 +1,40 @@
+{
+	"name": "DW_Staging_Weather",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure DW DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "_id",
+				"type": "varchar"
+			},
+			{
+				"name": "weatherDate",
+				"type": "varchar"
+			},
+			{
+				"name": "weatherDateInt",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "airportCode",
+				"type": "varchar"
+			},
+			{
+				"name": "temperatureF",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "Staging",
+			"table": "Weather"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

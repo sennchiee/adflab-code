@@ -1,0 +1,58 @@
+{
+	"name": "FAA_Merge",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HDIStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "000000_0",
+				"folderPath": "FAAMerge",
+				"container": "output"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "N_Number",
+				"type": "String"
+			},
+			{
+				"name": "Serial_Number",
+				"type": "String"
+			},
+			{
+				"name": "Year_MFR",
+				"type": "String"
+			},
+			{
+				"name": "MFR_Name",
+				"type": "String"
+			},
+			{
+				"name": "Model_Name",
+				"type": "String"
+			},
+			{
+				"name": "Number_Engines",
+				"type": "String"
+			},
+			{
+				"name": "Number_Seats",
+				"type": "String"
+			},
+			{
+				"name": "0",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

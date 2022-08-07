@@ -1,0 +1,32 @@
+{
+	"name": "ODS_Airport",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure ODS DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Code",
+				"type": "varchar"
+			},
+			{
+				"name": "City_Airport",
+				"type": "varchar"
+			},
+			{
+				"name": "LastUpdDTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Airport"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

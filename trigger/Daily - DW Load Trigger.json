@@ -1,0 +1,35 @@
+{
+	"name": "Daily - DW Load Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Master - Behin DW Load",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"recipient": "sennchieelim@microsoft.com"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-08-03T11:28:00",
+				"timeZone": "Singapore Standard Time",
+				"schedule": {
+					"minutes": [
+						35
+					],
+					"hours": [
+						19
+					]
+				}
+			}
+		}
+	}
+}

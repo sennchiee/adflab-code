@@ -1,0 +1,46 @@
+{
+	"name": "DW_Staging_Aircraft",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure DW DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "N-Number",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Serial Number",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Year MFR",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MFR-NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MODEL-NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NUMBER-ENGINES",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NUMBER-SEATS",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "Staging",
+			"table": "DimAircraft"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

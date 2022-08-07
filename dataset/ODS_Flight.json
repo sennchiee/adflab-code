@@ -1,0 +1,199 @@
+{
+	"name": "ODS_Flight",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure ODS DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "YEAR",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "MONTH",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "FL_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "UNIQUE_CARRIER",
+				"type": "varchar"
+			},
+			{
+				"name": "AIRLINE_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CARRIER",
+				"type": "varchar"
+			},
+			{
+				"name": "TAIL_NUM",
+				"type": "varchar"
+			},
+			{
+				"name": "FL_NUM",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ORIGIN_AIRPORT_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ORIGIN_AIRPORT_SEQ_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ORIGIN_CITY_MARKET_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEST_AIRPORT_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEST_AIRPORT_SEQ_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEST_CITY_MARKET_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DEP_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "DEP_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DEP_DELAY_NEW",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "TAXI_OUT",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "WHEELS_OFF",
+				"type": "varchar"
+			},
+			{
+				"name": "WHEELS_ON",
+				"type": "varchar"
+			},
+			{
+				"name": "TAXI_IN",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ARR_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "ARR_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ARR_DELAY_NEW",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "CANCELLED",
+				"type": "bit"
+			},
+			{
+				"name": "CANCELLATION_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "ACTUAL_ELAPSED_TIME",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "AIR_TIME",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "FLIGHTS",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DISTANCE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CARRIER_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "WEATHER_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "NAS_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "SECURITY_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "LATE_AIRCRAFT_DELAY",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DEST_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "ORIGIN_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "LastUpdDTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Flight"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "adflab-myadf",
+	"location": "australiaeast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f4b1d3f5-9de1-4eaf-b49e-fd644742a35a",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}

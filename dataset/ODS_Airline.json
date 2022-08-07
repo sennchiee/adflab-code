@@ -1,0 +1,33 @@
+{
+	"name": "ODS_Airline",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Azure ODS DB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Airline_Code",
+				"type": "varchar"
+			},
+			{
+				"name": "LastUpdDTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Airline"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

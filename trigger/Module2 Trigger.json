@@ -1,0 +1,17 @@
+{
+	"name": "Module2 Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 1,
+				"startTime": "2022-08-01T16:35:00",
+				"timeZone": "Singapore Standard Time"
+			}
+		}
+	}
+}
